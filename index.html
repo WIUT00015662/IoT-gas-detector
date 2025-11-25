@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gas Sensor Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .box {
+            margin: auto;
+            width: 300px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 5px;
+        }
+        .value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="box">
+        <h2>Real-time Gas Level</h2>
+        <div id="gasValue" class="value">Loading...</div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+
+    <script type="module">
+  
+      // Import Firebase SDK (modular version)
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+      import { getDatabase, ref, onValue } 
+          from "https://www.gstatic.com/firebasejs/12.6.0/firebase-database.js";
+  
+      // Your Firebase config
+      const firebaseConfig = {
+          apiKey: "AIzaSyBRQ7N3zs2y-97Q7q_Qlq_RuiM5AixHLMQ",
+          authDomain: "iot2-c9191.firebaseapp.com",
+          projectId: "iot2-c9191",
+          storageBucket: "iot2-c9191.firebasestorage.app",
+          messagingSenderId: "1028833254170",
+          appId: "1:1028833254170:web:de942aa2909728f1a8aaa3",
+          measurementId: "G-0T3LZ988JY",
+          databaseURL: "https://iot2-c9191-default-rtdb.firebaseio.com"
+      };
+  
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+  
+      // Point to your database path
+      const gasRef = ref(db, "air_quality/gas_rate");
+  
+      // Listen for real-time data
+      onValue(gasRef, (snapshot) => {
+          const value = snapshot.val();
+          document.getElementById("gasValue").innerText = value ?? "No data";
+      });
+  </script>
+</body>
+</html>
